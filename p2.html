@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025-2026년 시도별 온열질환 발생 및 사망 현황 분석 리포트</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts Inter & Noto Sans KR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        danger: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                        },
+                        warning: {
+                            50: '#fffbebe',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Noto Sans KR', 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid rgba(51, 65, 85, 0.8);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        .dark ::webkit-scrollbar-thumb {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200">
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-200 dark:border-slate-800 px-4 lg:px-8 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-gradient-to-tr from-rose-500 to-amber-500 text-white rounded-xl shadow-md">
+                    <i data-lucide="thermometer-sun" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-semibold tracking-wider text-rose-600 dark:text-rose-400 uppercase">공공보건 심층 분석 보고서</span>
+                    <h1 class="text-lg md:text-xl font-bold text-slate-900 dark:text-white leading-tight">온열질환 발생 및 사망 현황 (2025-2026)</h1>
+                </div>
+            </div>
+
+            <!-- Header Controls -->
+            <div class="flex items-center gap-2">
+                <button id="themeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="다크/라이트 모드 전환">
+                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+                </button>
+                <button onclick="window.print()" class="hidden md:flex items-center gap-2 px-3 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                    <i data-lucide="printer" class="w-4 h-4"></i>
+                    <span>인쇄/PDF</span>
+                </button>
+                <a href="#summary" class="hidden sm:flex items-center gap-2 px-3.5 py-2 text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white rounded-lg shadow-sm transition">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                    <span>분석 요약</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 lg:px-8 py-8 space-y-8">
+
+        <!-- Executive Summary Banner -->
+        <section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-rose-950 text-white p-6 md:p-8 shadow-xl">
+            <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+                <i data-lucide="activity" class="w-96 h-96"></i>
+            </div>
+            <div class="relative z-10 max-w-3xl space-y-3">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-semibold">
+                    <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
+                    <span>핵심 발견: 디커플링(Decoupling) 현상 관찰</span>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight leading-snug">
+                    환자는 8% 줄었으나, 사망자는 33.3% 급증<br class="hidden sm:inline">
+                    <span class="text-rose-400">치명률 중심의 양적·질적 관리 전환</span> 시급
+                </h2>
+                <p class="text-slate-300 text-sm md:text-base leading-relaxed">
+                    2025년 대비 2026년 온열질환 총 질환자 수는 소폭 감소하였으나, 치명률(0.62% → 0.89%)이 크게 상승하였습니다. 수도권 비중 확대와 함께 전북·인천·강원 등 일부 지역의 높은 치명률 현상이 뚜렷하게 확인되었습니다.
+                </p>
+            </div>
+        </section>
+
+        <!-- KPI Metric Cards Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            <!-- Card 1: Total Patients -->
+            <div class="glass-card rounded-xl p-5 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">총 온열질환자 수 (2026)</span>
+                    <div class="p-2 bg-sky-100 dark:bg-sky-900/40 text-sky-600 dark:text-sky-400 rounded-lg">
+                        <i data-lucide="users" class="w-5 h-5"></i>
+                    </div>
+                </div>
+                <div class="flex items-baseline justify-between">
+                    <div class="text-3xl font-bold text-slate-900 dark:text-white">3,576 <span class="text-base font-normal text-slate-500">명</span></div>
+                    <span class="inline-flex items-center text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded">
+                        <i data-lucide="trending-down" class="w-3 h-3 mr-1"></i> -8.0%
+                    </span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">2025년: 3,885명 (전년대비 -309명)</p>
+            </div>
+
+            <!-- Card 2: Total Deaths -->
+            <div class="glass-card rounded-xl p-5 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">총 사망자 수 (2026)</span>
+                    <div class="p-2 bg-rose-100 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400 rounded-lg">
+                        <i data-lucide="skull" class="w-5 h-5"></i>
+                    </div>
+                </div>
+                <div class="flex items-baseline justify-between">
+                    <div class="text-3xl font-bold text-rose-600 dark:text-rose-400">32 <span class="text-base font-normal text-slate-500">명</span></div>
+                    <span class="inline-flex items-center text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/50 px-2 py-0.5 rounded">
+                        <i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> +33.3%
+                    </span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">2025년: 24명 (전년대비 +8명 급증)</p>
+            </div>
+
+            <!-- Card 3: Fatality Rate -->
+            <div class="glass-card rounded-xl p-5 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">전국 평균 치명률</span>
+                    <div class="p-2 bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 rounded-lg">
+                        <i data-lucide="percent" class="w-5 h-5"></i>
+                    </div>
+                </div>
+                <div class="flex items-baseline justify-between">
+                    <div class="text-3xl font-bold text-amber-600 dark:text-amber-400">0.89 <span class="text-base font-normal text-slate-500">%</span></div>
+                    <span class="inline-flex items-center text-xs font-semibold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50 px-2 py-0.5 rounded">
+                        <i data-lucide="arrow-up-right" class="w-3 h-3 mr-1"></i> +0.27%p
+                    </span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">2025년: 0.62% (중증화 관리 필요)</p>
+            </div>
+
+            <!-- Card 4: Top High-Risk Region -->
+            <div class="glass-card rounded-xl p-5 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">최고 치명률 지역 (2026)</span>
+                    <div class="p-2 bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 rounded-lg">
+                        <i data-lucide="map-pin font-bold" class="w-5 h-5"></i>
+                    </div>
+                </div>
+                <div class="flex items-baseline justify-between">
+                    <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">전북 <span class="text-lg font-bold">2.69%</span></div>
+                    <span class="inline-flex items-center text-xs font-semibold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/50 px-2 py-0.5 rounded">
+                        전국 평균의 3배
+                    </span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">환자 223명 중 6명 사망 (최다 사망)</p>
+            </div>
+        </section>
+
+        <!-- Visual Analytics Section (Charts) -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6" id="summary">
+            
+            <!-- Chart 1: Decoupling Bar & Line Chart -->
+            <div class="lg:col-span-6 glass-card rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                <i data-lucide="line-chart" class="w-5 h-5 text-rose-500"></i>
+                                연도별 발생 vs 사망 '디커플링' 현황
+                            </h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">질환자 감소에도 불구하고 사망자 및 치명률 급증</p>
+                        </div>
+                    </div>
+                    <div class="h-64 relative">
+                        <canvas id="decouplingChart"></canvas>
+                    </div>
+                </div>
+                <div class="mt-4 p-3 bg-slate-100 dark:bg-slate-800/60 rounded-xl text-xs text-slate-600 dark:text-slate-300">
+                    <strong class="text-slate-900 dark:text-white">시사점:</strong> 환자 수 양적 통제에서 중증 환자 응급 이송 및 의료 대응의 질적 관리로의 정책 패러다임 전환 필요.
+                </div>
+            </div>
+
+            <!-- Chart 2: Regional Share Comparison Chart -->
+            <div class="lg:col-span-6 glass-card rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                <i data-lucide="bar-chart-2" class="w-5 h-5 text-sky-500"></i>
+                                주요 시도별 질환자 발생 비중 변화
+                            </h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">수도권 집중 가화 (서울 비중 8.4% → 12.6% 급증)</p>
+                        </div>
+                    </div>
+                    <div class="h-64 relative">
+                        <canvas id="regionalShareChart"></canvas>
+                    </div>
+                </div>
+                <div class="mt-4 p-3 bg-slate-100 dark:bg-slate-800/60 rounded-xl text-xs text-slate-600 dark:text-slate-300">
+                    <strong class="text-slate-900 dark:text-white">시사점:</strong> 서울 지역 질환자가 37.3% 급증하여 밀집된 도시 환경에 맞춘 '도시형 폭염 대책' 재정비가 시급함.
+                </div>
+            </div>
+
+            <!-- Chart 3: High Fatality Rate Region Comparison -->
+            <div class="lg:col-span-12 glass-card rounded-2xl p-6 shadow-sm">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i data-lucide="alert-circle" class="w-5 h-5 text-purple-500"></i>
+                            2026년 고위험 지역 치명률(%) 및 사망 현황
+                        </h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">발생 대비 사망 비율이 전국 평균(0.89%)을 크게 상회하는 취약 지역</p>
+                    </div>
+                    <div class="flex items-center gap-3 text-xs">
+                        <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
+                            <span class="w-3 h-3 rounded-full bg-purple-600 inline-block"></span> 고치명률 지역
+                        </span>
+                        <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
+                            <span class="w-3 h-3 rounded-full bg-slate-400 inline-block"></span> 전국 평균 (0.89%)
+                        </span>
+                    </div>
+                </div>
+                <div class="h-64 relative">
+                    <canvas id="fatalityRateChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Regional Comparison Detail Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- Deep Dive: Capital Area (Gyeonggi vs Seoul) -->
+            <div class="glass-card rounded-2xl p-6 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i data-lucide="building-2" class="w-5 h-5 text-indigo-500"></i>
+                        주요 발생 지역 (경기 vs 서울) 집중 분석
+                    </h3>
+                    <span class="text-xs font-medium px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 rounded-full">전국 발생량의 ~37%</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Gyeonggi Card -->
+                    <div class="p-4 rounded-xl bg-slate-100/70 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/50 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-slate-900 dark:text-white">경기도</span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 font-semibold">안정화 추세</span>
+                        </div>
+                        <div class="space-y-1 text-xs text-slate-600 dark:text-slate-300">
+                            <div class="flex justify-between">
+                                <span>환자 수:</span>
+                                <span class="font-semibold text-slate-800 dark:text-slate-200">899명 → 885명 (소폭 감소)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>사망자 수:</span>
+                                <span class="font-semibold text-emerald-600 dark:text-emerald-400">5명 → 2명 (60% 감소)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>전국 구성비:</span>
+                                <span class="font-semibold">24.7% (1위)</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-200 dark:border-slate-700">
+                            전국 최대 발생지이나 사망자 통제 관리가 유의미하게 개선됨.
+                        </p>
+                    </div>
+
+                    <!-- Seoul Card -->
+                    <div class="p-4 rounded-xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200/60 dark:border-rose-900/40 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-slate-900 dark:text-white">서울특별시</span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-300 font-semibold">위험도 급증</span>
+                        </div>
+                        <div class="space-y-1 text-xs text-slate-600 dark:text-slate-300">
+                            <div class="flex justify-between">
+                                <span>환자 수:</span>
+                                <span class="font-semibold text-rose-600 dark:text-rose-400">327명 → 449명 (+37.3%)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>사망자 수:</span>
+                                <span class="font-semibold text-rose-600 dark:text-rose-400">3명 → 6명 (2배 증가)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>전국 구성비:</span>
+                                <span class="font-semibold">8.4% → 12.6% (+4.2%p)</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-rose-200 dark:border-rose-900/50">
+                            발생 규모와 중증도가 동시에 악화되어 특화 대책이 시급함.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deep Dive: High Fatality Vulnerable Regions -->
+            <div class="glass-card rounded-2xl p-6 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i data-lucide="shield-alert" class="w-5 h-5 text-purple-500"></i>
+                        고치명률 우려 지역 상세 분석 (2026)
+                    </h3>
+                    <span class="text-xs font-medium px-2.5 py-1 bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 rounded-full">의료 자원 우선 점검 대상</span>
+                </div>
+
+                <div class="space-y-3">
+                    <!-- Jeonbuk Item -->
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/50">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-purple-600 text-white flex items-center justify-center font-bold text-sm">1</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-slate-900 dark:text-white">전북특별자치도</h4>
+                                <p class="text-xs text-slate-500">질환자 223명 / 사망자 6명 (최다 사망)</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-base font-extrabold text-purple-600 dark:text-purple-400">2.69%</span>
+                            <p class="text-[10px] text-slate-500">전국 평균의 3.0배</p>
+                        </div>
+                    </div>
+
+                    <!-- Incheon Item -->
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/50">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-purple-500 text-white flex items-center justify-center font-bold text-sm">2</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-slate-900 dark:text-white">인천광역시</h4>
+                                <p class="text-xs text-slate-500">질환자 182명 / 사망자 4명</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-base font-extrabold text-purple-600 dark:text-purple-400">2.20%</span>
+                            <p class="text-[10px] text-slate-500">전국 평균의 2.5배</p>
+                        </div>
+                    </div>
+
+                    <!-- Gangwon Item -->
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/50">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-purple-400 text-white flex items-center justify-center font-bold text-sm">3</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-slate-900 dark:text-white">강원특별자치도</h4>
+                                <p class="text-xs text-slate-500">질환자 147명 / 사망자 3명</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-base font-extrabold text-purple-600 dark:text-purple-400">2.04%</span>
+                            <p class="text-[10px] text-slate-500">전국 평균의 2.3배</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Interactive Regional Data Table -->
+        <section class="glass-card rounded-2xl p-6 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i data-lucide="table" class="w-5 h-5 text-emerald-500"></i>
+                        2025-2026 시도별 종합 데이터 현황표
+                    </h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">지역별 질환자, 사망자, 구성비 및 치명률 상세 데이터</p>
+                </div>
+                <!-- Table Search & Filter Input -->
+                <div class="relative w-full sm:w-64">
+                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="tableSearch" placeholder="지역명 검색..." class="w-full pl-9 pr-3 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 text-xs font-semibold uppercase tracking-wider border-b border-slate-200 dark:border-slate-700">
+                            <th class="py-3 px-4">지역</th>
+                            <th class="py-3 px-4 text-right">2025 환자(명)</th>
+                            <th class="py-3 px-4 text-right">2026 환자(명)</th>
+                            <th class="py-3 px-4 text-right">2026 비중(%)</th>
+                            <th class="py-3 px-4 text-right">2025 사망(명)</th>
+                            <th class="py-3 px-4 text-right">2026 사망(명)</th>
+                            <th class="py-3 px-4 text-right">2026 치명률(%)</th>
+                            <th class="py-3 px-4 text-center">위험도 진단</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTableBody" class="divide-y divide-slate-200 dark:divide-slate-800 text-xs sm:text-sm">
+                        <!-- Dynamic JavaScript Rows Inserted Here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Policy Recommendations Section -->
+        <section class="glass-card rounded-2xl p-6 shadow-sm space-y-6">
+            <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <i data-lucide="lightbulb" class="w-5 h-5 text-amber-500"></i>
+                    통계적 시사점 및 3대 핵심 정책 제언
+                </h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">공공보건 안전망 강화를 위한 선제적 대응 가이드라인</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Policy 1 -->
+                <div class="p-5 rounded-xl bg-gradient-to-b from-rose-50/50 to-transparent dark:from-rose-950/20 dark:to-transparent border border-rose-100 dark:border-rose-900/30 space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center font-bold">1</div>
+                    <h4 class="font-bold text-base text-slate-900 dark:text-white">치명률 관리 중심 대응 체계 전환</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        전체 질환자 수 감소에도 사망자가 33.3% 증가한 점은 환자의 중증화 심화를 의미합니다. 단순 예방 홍보를 넘어 독거노인·고령자 등 고위험군 대상 밀착 모니터링과 중증 환자 응급 이송 시스템의 골든타임 확보가 시급합니다.
+                    </p>
+                </div>
+
+                <!-- Policy 2 -->
+                <div class="p-5 rounded-xl bg-gradient-to-b from-indigo-50/50 to-transparent dark:from-indigo-950/20 dark:to-transparent border border-indigo-100 dark:border-indigo-900/30 space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-500 text-white flex items-center justify-center font-bold">2</div>
+                    <h4 class="font-bold text-base text-slate-900 dark:text-white">수도권 및 대도시 위험 급증 대응</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        경기도의 높은 비중(24.7%)과 서울의 환자 및 사망자 동시 급증(환자 +37.3%, 사망 2배)에 대응하여 고밀도 도심 열섬 현상 특성에 맞춘 '도시형 온열질환 특화 매뉴얼'을 신속히 재정비해야 합니다.
+                    </p>
+                </div>
+
+                <!-- Policy 3 -->
+                <div class="p-5 rounded-xl bg-gradient-to-b from-purple-50/50 to-transparent dark:from-purple-950/20 dark:to-transparent border border-purple-100 dark:border-purple-900/30 space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500 text-white flex items-center justify-center font-bold">3</div>
+                    <h4 class="font-bold text-base text-slate-900 dark:text-white">고치명률 지역 맞춤형 긴급 지원</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        전북(2.69%), 인천(2.20%), 강원(2.04%) 등 발생 대비 사망률이 전국 평균을 최대 3배 상회하는 지역을 대상으로 응급 의료 자원 및 냉방 지원 예산을 우선 배분하고 현장 감사를 병행해야 합니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+        <p>본 리포트는 2025-2026년 공공보건 온열질환 데이터에 기반하여 제작된 종합 분석 보고서입니다.</p>
+    </footer>
+
+    <script>
+        // Data Set Definition
+        const regionalData = [
+            { region: '경기', ill2025: 899, ill2026: 885, share2026: 24.7, death2025: 5, death2026: 2, fatality: 0.23, riskLevel: '관심' },
+            { region: '서울', ill2025: 327, ill2026: 449, share2026: 12.6, death2025: 3, death2026: 6, fatality: 1.34, riskLevel: '경고' },
+            { region: '경남', ill2025: 310, ill2026: 297, share2026: 8.3, death2025: 2, death2026: 3, fatality: 1.01, riskLevel: '주의' },
+            { region: '경북', ill2025: 373, ill2026: 280, share2026: 7.8, death2025: 3, death2026: 2, fatality: 0.71, riskLevel: '관심' },
+            { region: '전남·광주', ill2025: 361, ill2026: 275, share2026: 7.7, death2025: 2, death2026: 2, fatality: 0.73, riskLevel: '관심' },
+            { region: '전북', ill2025: 240, ill2026: 223, share2026: 6.2, death2025: 1, death2026: 6, fatality: 2.69, riskLevel: '위험' },
+            { region: '인천', ill2025: 195, ill2026: 182, share2026: 5.1, death2025: 1, death2026: 4, fatality: 2.20, riskLevel: '위험' },
+            { region: '충남', ill2025: 290, ill2026: 170, share2026: 4.8, death2025: 5, death2026: 1, fatality: 0.59, riskLevel: '관심' },
+            { region: '강원', ill2025: 160, ill2026: 147, share2026: 4.1, death2025: 1, death2026: 3, fatality: 2.04, riskLevel: '위험' },
+            { region: '기타 시도', ill2025: 860, ill2026: 668, share2026: 18.7, death2025: 1, death2026: 3, fatality: 0.45, riskLevel: '보통' }
+        ];
+
+        // Initialize Theme Toggle
+        const themeToggleBtn = document.getElementById('themeToggle');
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Populate Table Function
+        function renderTable(data) {
+            const tbody = document.getElementById('dataTableBody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 dark:hover:bg-slate-800/50 transition';
+
+                let badgeColor = 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300';
+                if (item.riskLevel === '위험') badgeColor = 'bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 font-bold';
+                else if (item.riskLevel === '경고') badgeColor = 'bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 font-bold';
+                else if (item.riskLevel === '주의') badgeColor = 'bg-sky-100 dark:bg-sky-950/60 text-sky-700 dark:text-sky-300';
+
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-semibold text-slate-900 dark:text-white">${item.region}</td>
+                    <td class="py-3 px-4 text-right text-slate-600 dark:text-slate-400">${item.ill2025.toLocaleString()}</td>
+                    <td class="py-3 px-4 text-right font-semibold text-slate-900 dark:text-white">${item.ill2026.toLocaleString()}</td>
+                    <td class="py-3 px-4 text-right text-slate-600 dark:text-slate-400">${item.share2026}%</td>
+                    <td class="py-3 px-4 text-right text-slate-600 dark:text-slate-400">${item.death2025}</td>
+                    <td class="py-3 px-4 text-right font-bold ${item.death2026 >= 5 ? 'text-rose-600 dark:text-rose-400' : 'text-slate-900 dark:text-white'}">${item.death2026}</td>
+                    <td class="py-3 px-4 text-right font-bold ${item.fatality >= 2.0 ? 'text-purple-600 dark:text-purple-400' : 'text-slate-800 dark:text-slate-200'}">${item.fatality.toFixed(2)}%</td>
+                    <td class="py-3 px-4 text-center">
+                        <span class="px-2.5 py-1 rounded-full text-xs ${badgeColor}">${item.riskLevel}</span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Table Search Filter Logic
+        document.getElementById('tableSearch').addEventListener('input', (e) => {
+            const query = e.target.value.trim().toLowerCase();
+            const filtered = regionalData.filter(item => item.region.toLowerCase().includes(query));
+            renderTable(filtered);
+        });
+
+        // Initialize Charts when DOM Ready
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTable(regionalData);
+
+            const isDark = document.documentElement.classList.contains('dark');
+            const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+            const textColor = isDark ? '#94a3b8' : '#64748b';
+
+            // Chart 1: Decoupling Chart (Bar + Line)
+            const ctxDecoupling = document.getElementById('decouplingChart').getContext('2d');
+            new Chart(ctxDecoupling, {
+                type: 'bar',
+                data: {
+                    labels: ['2025년', '2026년'],
+                    datasets: [
+                        {
+                            label: '질환자 수 (명)',
+                            data: [3885, 3576],
+                            backgroundColor: 'rgba(56, 189, 248, 0.7)',
+                            borderColor: '#0284c7',
+                            borderWidth: 1,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: '사망자 수 (명)',
+                            data: [24, 32],
+                            type: 'line',
+                            borderColor: '#f43f5e',
+                            backgroundColor: '#f43f5e',
+                            borderWidth: 3,
+                            pointRadius: 6,
+                            pointHoverRadius: 8,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { grid: { display: false }, ticks: { color: textColor } },
+                        y: {
+                            type: 'linear',
+                            position: 'left',
+                            title: { display: true, text: '질환자 수 (명)', color: textColor },
+                            grid: { color: gridColor },
+                            ticks: { color: textColor }
+                        },
+                        y1: {
+                            type: 'linear',
+                            position: 'right',
+                            title: { display: true, text: '사망자 수 (명)', color: textColor },
+                            grid: { drawOnChartArea: false },
+                            ticks: { color: textColor }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: textColor } }
+                    }
+                }
+            });
+
+            // Chart 2: Regional Share Top Regions Comparison
+            const ctxShare = document.getElementById('regionalShareChart').getContext('2d');
+            new Chart(ctxShare, {
+                type: 'bar',
+                data: {
+                    labels: ['경기', '서울', '경남', '경북', '전남/광주'],
+                    datasets: [
+                        {
+                            label: '2025년 비중 (%)',
+                            data: [23.1, 8.4, 8.0, 9.6, 9.3],
+                            backgroundColor: 'rgba(148, 163, 184, 0.6)',
+                            borderRadius: 4
+                        },
+                        {
+                            label: '2026년 비중 (%)',
+                            data: [24.7, 12.6, 8.3, 7.8, 7.7],
+                            backgroundColor: 'rgba(3, 105, 161, 0.85)',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { grid: { display: false }, ticks: { color: textColor } },
+                        y: { grid: { color: gridColor }, ticks: { color: textColor }, title: { display: true, text: '비중 (%)', color: textColor } }
+                    },
+                    plugins: {
+                        legend: { labels: { color: textColor } }
+                    }
+                }
+            });
+
+            // Chart 3: High Fatality Rate Bar Chart
+            const ctxFatality = document.getElementById('fatalityRateChart').getContext('2d');
+            new Chart(ctxFatality, {
+                type: 'bar',
+                data: {
+                    labels: ['전북', '인천', '강원', '서울', '전국 평균', '경기'],
+                    datasets: [{
+                        label: '치명률 (%)',
+                        data: [2.69, 2.20, 2.04, 1.34, 0.89, 0.23],
+                        backgroundColor: [
+                            '#a855f7',
+                            '#c084fc',
+                            '#e879f9',
+                            '#f43f5e',
+                            '#94a3b8',
+                            '#38bdf8'
+                        ],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: { grid: { color: gridColor }, ticks: { color: textColor }, title: { display: true, text: '치명률 (%)', color: textColor } },
+                        y: { grid: { display: false }, ticks: { color: textColor } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
