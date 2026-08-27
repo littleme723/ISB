@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNU Special Lecture Series - Vibe Coding Showcase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        pnu: {
+                            blue: '#004B87',
+                            navy: '#0A192F',
+                            accent: '#38BDF8',
+                            gold: '#F59E0B',
+                            glow: '#0EA5E9'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #004B87 0%, #0EA5E9 50%, #6366F1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .dark .gradient-text {
+            background: linear-gradient(135deg, #38BDF8 0%, #818CF8 50%, #C084FC 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .vibe-glow {
+            box-shadow: 0 0 25px -5px rgba(14, 165, 233, 0.3);
+        }
+        .vibe-glow-hover:hover {
+            box-shadow: 0 10px 30px -5px rgba(14, 165, 233, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col">
+
+    <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pnu-blue to-pnu-accent flex items-center justify-center text-white font-bold text-xl shadow-md">
+                    PNU
+                </div>
+                <div>
+                    <h1 class="text-base font-bold leading-tight text-slate-900 dark:text-white">Pusan National University</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Vibe Coding Special Lecture Series</p>
+                </div>
+            </div>
+
+            <!-- Header Controls -->
+            <div class="flex items-center gap-3">
+                <span class="hidden md:inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-1.5"></span>
+                    Interactive Lab Active
+                </span>
+                
+                <!-- Explicit Theme Mode Switcher -->
+                <div class="flex items-center bg-slate-200/80 dark:bg-slate-800 p-1 rounded-xl text-xs font-semibold border border-slate-300 dark:border-slate-700 shadow-inner">
+                    <button id="lightModeBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all font-medium" title="Switch to Light Mode">
+                        <i class="fa-solid fa-sun text-amber-500 text-sm"></i>
+                        <span>Light</span>
+                    </button>
+                    <button id="darkModeBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all font-medium" title="Switch to Dark Mode">
+                        <i class="fa-solid fa-moon text-indigo-400 text-sm"></i>
+                        <span>Dark</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <section class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sky-100 dark:bg-sky-950/80 border border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-300 text-xs font-semibold mb-4">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> AI-Augmented Engineering
+            </div>
+            <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4">
+                Special Lecture <span class="gradient-text">Vibe Coding</span> Projects
+            </h2>
+            <p class="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed">
+                A showcase of projects built during the Pusan National University special lecture series. Combining rapid AI-assisted development (Vibe Coding) with thermal sensor data processing and dynamic weather APIs.
+            </p>
+
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-3 gap-4 mt-8 p-4 rounded-2xl glass-card">
+                <div>
+                    <div class="text-xl sm:text-2xl font-bold text-pnu-blue dark:text-pnu-accent">3 Core</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">Lecture Modules</div>
+                </div>
+                <div>
+                    <div class="text-xl sm:text-2xl font-bold text-sky-500">Real-Time</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">Thermal & Weather</div>
+                </div>
+                <div>
+                    <div class="text-xl sm:text-2xl font-bold text-indigo-500">100% AI</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">Vibe Assisted</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-pnu-blue dark:text-pnu-accent"></i>
+                Lecture Artifacts
+            </h3>
+            
+            <div class="flex flex-wrap gap-2" id="filterContainer">
+                <button data-filter="all" class="filter-btn active px-4 py-1.5 rounded-xl text-xs sm:text-sm font-semibold bg-pnu-blue text-white shadow-sm transition-all">All Projects</button>
+                <button data-filter="thermal" class="filter-btn px-4 py-1.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">Thermal Analytics</button>
+                <button data-filter="weather" class="filter-btn px-4 py-1.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">Weather Apps</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            
+            <!-- CARD 1: Thermal Data Analysis 1 -->
+            <article data-category="thermal" onclick="if(!event.target.closest('button, canvas, a')) window.location.href='p1.html'" class="glass-card rounded-2xl overflow-hidden shadow-lg border hover:border-sky-400 dark:hover:border-sky-500 transition-all duration-300 flex flex-col group vibe-glow-hover cursor-pointer">
+                <!-- Card Header Visual -->
+                <div class="p-5 bg-slate-900 text-white relative overflow-hidden flex flex-col justify-between h-48">
+                    <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                    <div class="flex justify-between items-start z-10">
+                        <span class="px-2.5 py-1 rounded-lg bg-orange-500/20 text-orange-400 border border-orange-500/30 text-xs font-mono font-semibold">
+                            Module 01
+                        </span>
+                        <span class="text-xs bg-slate-800/80 px-2 py-1 rounded text-slate-300 border border-slate-700 font-mono">
+                            Canvas 2D / Heatmap
+                        </span>
+                    </div>
+
+                    <div class="z-10 mt-auto">
+                        <h4 class="text-xl font-bold text-white group-hover:text-sky-300 transition-colors">Thermal Data Analysis 1</h4>
+                        <p class="text-xs text-slate-400 mt-1">Spatial Heatmaps & Matrix Sampling</p>
+                    </div>
+                </div>
+
+                <!-- Interactive Mini Thermal Canvas Preview -->
+                <div class="p-4 bg-slate-100 dark:bg-slate-900/50 border-y border-slate-200 dark:border-slate-800">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 font-mono">LIVE MATRIX PREVIEW</span>
+                        <button id="refreshThermal1" class="text-xs text-sky-600 dark:text-sky-400 hover:underline flex items-center gap-1 font-semibold">
+                            <i class="fa-solid fa-arrows-rotate"></i> Regenerate
+                        </button>
+                    </div>
+                    <div class="relative rounded-xl overflow-hidden border border-slate-300 dark:border-slate-700 aspect-video bg-black flex items-center justify-center">
+                        <canvas id="thermalCanvas1" class="w-full h-full object-cover cursor-crosshair"></canvas>
+                        <div id="tempTooltip1" class="hidden absolute pointer-events-none bg-slate-900/90 text-white text-[10px] font-mono px-2 py-1 rounded border border-slate-700 shadow-md">
+                            Temp: 0°C
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Content Body -->
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                            Fundamentals of spatial thermal grid rendering. Vibe-coded logic to map raw numerical array matrices into color spectrum gradients for infrared thermal inspection.
+                        </p>
+                        
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-xs text-slate-500 dark:text-slate-400">
+                                <i class="fa-solid fa-check text-emerald-500 mr-2"></i>
+                                <span>Matrix Normalization & RGB Spectrum Interpolation</span>
+                            </div>
+                            <div class="flex items-center text-xs text-slate-500 dark:text-slate-400">
+                                <i class="fa-solid fa-check text-emerald-500 mr-2"></i>
+                                <span>Cursor Hover Temperature Sampling</span>
+                            </div>
+                            <div class="flex items-center text-xs text-slate-500 dark:text-slate-400">
+                                <i class="fa-solid fa-check text-emerald-500 mr-2"></i>
+                                <span>High-temperature hotspot highlighting</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tech Tags & Action -->
+                    <div class="pt-4 border-t border-slate-200 dark:border-slate-800">
+                        <div class="flex flex-wrap gap-1.5 mb-4">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-sky-100 dark:bg-sky-900/40 text-sky-700 dark:text-sky-300">HTML5 Canvas</span>
+                            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300">Color Gradients</span>
+                            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300">Vibe Prompting</span>
+                        </div>
+                        <a href="p1.html" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 dark:bg-slate-800 hover:bg-pnu-blue dark:hover:bg-pnu-blue text-white font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2">
+                            <span>Open Project (p1.html)</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- CARD 2: Thermal Data Analysis 2 -->
+            <article data-category="thermal" onclick="if(!event.target.closest('button, canvas, a')) window.location.href='p2.html'" class="glass-card rounded-2xl overflow-hidden shadow-lg border hover:border-sky-400 dark:hover:border-sky-500 transition-all duration-300 flex flex-col group vibe-glow-hover cursor-pointer">
+                <!-- Card Header Visual -->
+                <div class="p-5 bg-slate-900 text-white relative overflow-hidden flex flex-col justify-between h-48">
+                    <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                    <div class="flex justify-between items-start z-10">
+                        <span class="px-2.5 py-1 rounded-lg bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-mono font-semibold">
+                            Module 02
+                        </span>
+                        <span class="text-xs bg-slate-800/80 px-2 py-1 rounded text-slate-300 border border-slate-700 font-mono">
+                            Time Series / Alerts
+                        </span>
+                    </div>
+
+                    <div class="z-10 mt-auto">
+                        <h4 class="text-xl font-bold text-white group-hover:text-sky-300 transition-colors">Thermal Data Analysis 2</h4>
+                        <p class="text-xs text-slate-400 mt-1">Temporal Forecasting & Anomaly Alerts</p>
+                    </div>
+                </div>
+
+                <!-- Interactive Mini Chart Preview -->
+                <div class="p-4 bg-slate-100 dark:bg-slate-900/50 border-y border-slate-200 dark:border-slate-800">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 font-mono">SENSOR DATA STREAM</span>
+                        <span id="anomalyStatus" class="text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+                            NORMAL (38.2°C)
+                        </span>
+                    </div>
+                    <div class="relative rounded-xl overflow-hidden border border-slate-300 dark:border-slate-700 aspect-video bg-white dark:bg-slate-950 p-2">
+                        <canvas id="thermalChart2"></canvas>
+                    </div>
+                </div>
+
+                <!-- Card Content Body -->
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                            Advanced time-series thermal sensor streaming. Vibe coding algorithms to trigger dynamic threshold alerts, compute moving averages, and predict thermal runaway.
+                        </p>
+                        
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-xs text-slate-500 dark:text-slate-400">
+                                <i class="fa-solid fa-check text-emerald-500 mr-2"></i>
+                                <span>Real-time Multi-sensor telemetry charts</span>
+                            </div>
+                            <div class="flex items-center text-xs text-slate-500 dark:text-slate-400">
+                                <i class="fa-solid fa-check text-emerald-500 mr-2"></i>
+                                <span>Automated Anomaly Detection (>65°C spike)</span>
+                            </div>
+                            <div class="flex items-center text-xs text-slate-500 dark:text-slate-400">
+                                <i class="fa-solid fa-check text-emerald-500 mr-2"></i>
+                                <span>Statistical Noise Filtering & Trends</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tech Tags & Action -->
+                    <div class="pt-4 border-t border-slate-200 dark:border-slate-800">
+                        <div class="flex flex-wrap gap-1.5 mb-4">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300">Chart.js</span>
+                            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300">Anomaly Rules</span>
+                            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300">Time-Series</span>
+                        </div>
+                        <a href="p2.html" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 dark:bg-slate-800 hover:bg-pnu-blue dark:hover:bg-pnu-blue text-white font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2">
+                            <span>Open Project (p2.html)</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- CARD 3: Weather App -->
+            <article data-category="weather" onclick="if(!event.target.closest('button, canvas, a')) window.location.href='p3.html'" class="glass-card rounded-2xl overflow-hidden shadow-lg border hover:border-sky-400 dark:hover:border-sky-500 transition-all duration-300 flex flex-col group vibe-glow-hover cursor-pointer">
+                <!-- Card Header Visual -->
+                <div class="p-5 bg-slate-900 text-white relative overflow-hidden flex flex-col justify-between h-48">
+                    <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                    <div class="flex justify-between items-start z-10">
+                        <span class="px-2.5 py-1 rounded-lg bg-sky-500/20 text-sky-400 border border-sky-500/30 text-xs font-mono font-semibold">
+                            Module 03
+                        </span>
+                        <span class="text-xs bg-slate-800/80 px-2 py-1 rounded text-slate-300 border border-slate-700 font-mono">
+                            API / Weather UI
+                        </span>
+                    </div>
+
+                    <div class="z-10 mt-auto">
+                        <h4 class="text-xl font-bold text-white group-hover:text-sky-300 transition-colors">Busan Weather App</h4>
+                        <p class="text-xs text-slate-400 mt-1">PNU Meteorological & Thermal Index</p>
+                    </div>
+                </div>
+
+                <!-- Interactive Mini Weather Widget -->
+                <div class="p-4 bg-gradient-to-br from-sky-500 to-pnu-blue text-white border-y border-slate-200 dark:border-slate-800">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <span class="text-xs font-medium text-sky-100 flex items-center gap-1">
+                                <i class="fa-solid fa-location-dot"></i> Busan, PNU Campus
+                            </span>
+                            <h5 id="weatherTemp" class="text-3xl font-bold my-1">21.5°C</h5>
+                        </div>
+                        <i id="weatherIcon" class="fa-solid fa-cloud-sun text-4xl text-amber-300 animate-bounce"></i>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-[11px] bg-white/10 rounded-lg p-2 backdrop-blur-sm">
+                        <div>Humidity: <span id="humidityVal" class="font-bold">65%</span></div>
+                        <div>Thermal Comfort: <span id="comfortVal" class="font-bold text-emerald-300">Optimal</span></div>
+                    </div>
+                </div>
+
+                <!-- Card Content Body -->
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                            Integrating live meteorological API feeds with custom weather visualization components. Vibe coding connected weather metrics with campus thermal comfort indices.
+                        </p>
+                        
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-xs text-slate-500 dark:text-slate-400">
+                                <i class="fa-solid fa-check text-emerald-500 mr-2"></i>
+                                <span>Live weather fetch & asynchronous UI state</span>
+                            </div>
+                            <div class="flex items-center text-xs text-slate-500 dark:text-slate-400">
+                                <i class="fa-solid fa-check text-emerald-500 mr-2"></i>
+                                <span>Thermal Heat Index calculations</span>
+                            </div>
+                            <div class="flex items-center text-xs text-slate-500 dark:text-slate-400">
+                                <i class="fa-solid fa-check text-emerald-500 mr-2"></i>
+                                <span>Dynamic background weather effects</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tech Tags & Action -->
+                    <div class="pt-4 border-t border-slate-200 dark:border-slate-800">
+                        <div class="flex flex-wrap gap-1.5 mb-4">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-sky-100 dark:bg-sky-900/40 text-sky-700 dark:text-sky-300">Fetch API</span>
+                            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300">OpenMeteo API</span>
+                            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300">Tailwind CSS</span>
+                        </div>
+                        <a href="p3.html" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 dark:bg-slate-800 hover:bg-pnu-blue dark:hover:bg-pnu-blue text-white font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2">
+                            <span>Open Project (p3.html)</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+
+        <section class="mt-16 sm:mt-24 p-6 sm:p-10 rounded-3xl bg-slate-900 text-white relative overflow-hidden shadow-2xl">
+            <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-pnu-blue rounded-full blur-3xl opacity-40"></div>
+            <div class="relative z-10">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+                    <div>
+                        <span class="text-xs font-mono font-semibold text-sky-400 uppercase tracking-widest">PNU Pedagogy</span>
+                        <h3 class="text-2xl sm:text-3xl font-extrabold mt-1">What is Vibe Coding?</h3>
+                        <p class="text-slate-300 text-sm sm:text-base mt-2 max-w-2xl">
+                            Instead of manually writing boilerplates line-by-line, students at Pusan National University utilize generative AI prompts to express high-level architectural intentions ("vibes"), then iterate and refine real data pipelines rapidly.
+                        </p>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <a href="#prompts" onclick="scrollToPrompts()" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm transition-all shadow-lg">
+                            <i class="fa-solid fa-terminal"></i> View Sample Prompts
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 3 Steps of Vibe Coding -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-5 rounded-2xl bg-slate-800/80 border border-slate-700">
+                        <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-lg mb-3">1</div>
+                        <h4 class="font-bold text-base mb-1">Intent Prompting</h4>
+                        <p class="text-xs text-slate-400">Describe physical domain concepts (e.g. thermal matrices, weather indices) in plain text.</p>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-slate-800/80 border border-slate-700">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-lg mb-3">2</div>
+                        <h4 class="font-bold text-base mb-1">Rapid Synthesis</h4>
+                        <p class="text-xs text-slate-400">Generate fully responsive Canvas, Chart.js, and API structures instantly inside one file.</p>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-slate-800/80 border border-slate-700">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg mb-3">3</div>
+                        <h4 class="font-bold text-base mb-1">Interactive Refinement</h4>
+                        <p class="text-xs text-slate-400">Fine-tune edge cases, thresholds, dark mode, and UI polish with high precision.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="prompts" class="mt-12 sm:mt-16">
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-code text-sky-500"></i>
+                Lecture Prompts Used in Vibe Coding
+            </h3>
+
+            <div class="space-y-4">
+                <!-- Prompt 1 -->
+                <div class="glass-card rounded-2xl p-5 border">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-mono font-bold text-sky-600 dark:text-sky-400">PROMPT #1 — Thermal Analysis 1</span>
+                        <button onclick="copyPrompt('prompt1Text')" class="text-xs text-slate-500 hover:text-slate-800 dark:hover:text-white flex items-center gap-1 font-mono">
+                            <i class="fa-regular fa-copy"></i> Copy Prompt
+                        </button>
+                    </div>
+                    <pre id="prompt1Text" class="bg-slate-950 text-slate-200 text-xs p-4 rounded-xl font-mono overflow-x-auto whitespace-pre-wrap leading-relaxed border border-slate-800">
+"Act as a computer vision & sensor data engineer. Build a single-file web app in HTML5 Canvas that accepts a 20x20 matrix of thermal temperature readings (20°C to 80°C). Convert this matrix into an interpolated smooth heatmap image using custom colormaps (Blue -> Yellow -> Red). Allow hover interaction to inspect exact temperature values at cursor pixel."</pre>
+                </div>
+
+                <!-- Prompt 2 -->
+                <div class="glass-card rounded-2xl p-5 border">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-mono font-bold text-rose-600 dark:text-rose-400">PROMPT #2 — Thermal Analysis 2</span>
+                        <button onclick="copyPrompt('prompt2Text')" class="text-xs text-slate-500 hover:text-slate-800 dark:hover:text-white flex items-center gap-1 font-mono">
+                            <i class="fa-regular fa-copy"></i> Copy Prompt
+                        </button>
+                    </div>
+                    <pre id="prompt2Text" class="bg-slate-950 text-slate-200 text-xs p-4 rounded-xl font-mono overflow-x-auto whitespace-pre-wrap leading-relaxed border border-slate-800">
+"Create a real-time time-series thermal streaming dashboard using Chart.js. Generate simulated sensor feeds every second. Calculate moving average and highlight anomalous spikes above 65°C in bright red with alarm indicator badges. Maintain high performance without memory leaks."</pre>
+                </div>
+
+                <!-- Prompt 3 -->
+                <div class="glass-card rounded-2xl p-5 border">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">PROMPT #3 — Weather App</span>
+                        <button onclick="copyPrompt('prompt3Text')" class="text-xs text-slate-500 hover:text-slate-800 dark:hover:text-white flex items-center gap-1 font-mono">
+                            <i class="fa-regular fa-copy"></i> Copy Prompt
+                        </button>
+                    </div>
+                    <pre id="prompt3Text" class="bg-slate-950 text-slate-200 text-xs p-4 rounded-xl font-mono overflow-x-auto whitespace-pre-wrap leading-relaxed border border-slate-800">
+"Build a minimalist weather widget tailored for Pusan National University campus (Busan latitude 35.23, longitude 129.08). Fetch real weather metrics from OpenMeteo API, calculate thermal comfort index using temperature & humidity, and present it with dynamic styling and dark mode."</pre>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl transition-all scale-95 opacity-0 transform" id="modalContainer">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-start sticky top-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md z-10">
+                <div>
+                    <span id="modalBadge" class="px-2 py-0.5 rounded text-xs font-mono font-bold bg-sky-100 text-sky-700 dark:bg-sky-900/50 dark:text-sky-300">
+                        MODULE
+                    </span>
+                    <h3 id="modalTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
+                        Project Details
+                    </h3>
+                </div>
+                <button onclick="closeModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="p-6 space-y-6">
+                <div>
+                    <h4 class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-2">Lecture Overview</h4>
+                    <p id="modalDescription" class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Detailed overview content will be injected here.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-2">Key Takeaways & Vibe Coding Techniques</h4>
+                    <ul id="modalTakeaways" class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                        <!-- Dynamic list -->
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-2">Generated Code Structure</h4>
+                    <div id="modalCodeSnippet" class="bg-slate-950 text-slate-200 text-xs p-4 rounded-xl font-mono overflow-x-auto border border-slate-800 max-h-48">
+                        <!-- Dynamic Code snippet -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-6 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-3">
+                <button onclick="closeModal()" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-700 transition-all">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white text-xs font-mono py-3 px-5 rounded-2xl shadow-xl flex items-center gap-3 border border-slate-700">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span id="toastMsg">Prompt copied to clipboard!</span>
+    </div>
+
+    <footer class="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-8 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
+            <div class="flex items-center gap-2">
+                <span class="font-bold text-slate-700 dark:text-slate-300">Pusan National University (PNU)</span>
+                <span>•</span>
+                <span>Vibe Coding Special Lecture Summary</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="https://www.pusan.ac.kr" target="_blank" rel="noopener noreferrer" class="hover:underline">PNU Official</a>
+                <span>•</span>
+                <span>Curriculum 2026</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const modalData = {
+            thermal1: {
+                badge: 'MODULE 01 • THERMAL DATA 1',
+                title: 'Thermal Data Analysis 1: Spatial Grid Heatmap',
+                description: 'This lecture covered converting array matrix data from thermal infrared imaging hardware into web visualizers. Using AI vibe coding prompts, we built lightweight Canvas interpolators that dynamically paint temperature distributions ranging from 20°C (cool blue) to 80°C (critical thermal heat red).',
+                takeaways: [
+                    'Built a 2D matrix color mapping pipeline using HSL/RGB interpolation.',
+                    'Optimized real-time hover calculations for zero-lag coordinate lookup.',
+                    'Leveraged vibe coding to instantly generate clean color spectrum gradients.'
+                ],
+                code: `// Thermal 1 Matrix Renderer Snippet\nfunction renderThermalGrid(ctx, matrix) {\n  const rowH = canvas.height / matrix.length;\n  const colW = canvas.width / matrix[0].length;\n  matrix.forEach((row, r) => {\n    row.forEach((temp, c) => {\n      ctx.fillStyle = getTemperatureColor(temp);\n      ctx.fillRect(c * colW, r * rowH, colW, rowH);\n    });\n  });\n}`
+            },
+            thermal2: {
+                badge: 'MODULE 02 • THERMAL DATA 2',
+                title: 'Thermal Data Analysis 2: Time-Series & Anomaly Alerts',
+                description: 'The second thermal module shifted focus from spatial analysis to time-series streaming analytics. Students vibe-coded dynamic chart streams that automatically detect hardware overheating events, compute running averages, and issue warning notifications.',
+                takeaways: [
+                    'Real-time streaming integration with Chart.js animation loops.',
+                    'Threshold logic triggering automated danger status alerts (>65°C).',
+                    'Vibe-coded smooth rolling window datasets for industrial monitoring.'
+                ],
+                code: `// Time-Series Anomaly Detector\nfunction checkThermalAnomaly(newReading) {\n  if (newReading > 65.0) {\n    triggerAlarm("CRITICAL_TEMPERATURE_SPIKE", newReading);\n    return "ANOMALY_HIGH";\n  }\n  return "NORMAL";\n}`
+            },
+            weather: {
+                badge: 'MODULE 03 • WEATHER APP',
+                title: 'PNU Campus Weather App & Thermal Comfort Index',
+                description: 'In the third module, students synthesized web APIs with meteorological calculations. We vibe-coded a responsive weather app specifically targeting Pusan National University campus coordinates (Busan), extracting humidity, temperature, and evaluating thermal comfort indices.',
+                takeaways: [
+                    'Asynchronous fetch integration with OpenMeteo live API.',
+                    'Heat Index calculation formula implementation for campus thermal comfort.',
+                    'Modern glassmorphism UI styled rapidly using Tailwind CSS.'
+                ],
+                code: `// Weather API & Comfort Index Calculation\nasync function fetchPNUWeather() {\n  const url = 'https://api.open-meteo.com/v1/forecast?latitude=35.23&longitude=129.08&current_weather=true';\n  const res = await fetch(url);\n  const data = await res.json();\n  updateWeatherUI(data.current_weather);\n}`
+            }
+        };
+
+        const lightModeBtn = document.getElementById('lightModeBtn');
+        const darkModeBtn = document.getElementById('darkModeBtn');
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                darkModeBtn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all font-medium bg-slate-900 text-sky-300 shadow-sm";
+                lightModeBtn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900";
+                localStorage.setItem('pnu-theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                lightModeBtn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all font-medium bg-white text-slate-900 shadow-sm";
+                darkModeBtn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900";
+                localStorage.setItem('pnu-theme', 'light');
+            }
+        }
+
+        // Initialize theme preference from localStorage or system scheme
+        const savedTheme = localStorage.getItem('pnu-theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            setTheme('dark');
+        } else {
+            setTheme('light');
+        }
+
+        lightModeBtn.addEventListener('click', () => setTheme('light'));
+        darkModeBtn.addEventListener('click', () => setTheme('dark'));
+
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const articles = document.querySelectorAll('article[data-category]');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-pnu-blue', 'text-white');
+                    b.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+                });
+                btn.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+                btn.classList.add('bg-pnu-blue', 'text-white');
+
+                const filter = btn.dataset.filter;
+                articles.forEach(art => {
+                    if (filter === 'all' || art.dataset.category === filter) {
+                        art.style.display = 'flex';
+                    } else {
+                        art.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        const thermalCanvas1 = document.getElementById('thermalCanvas1');
+        const tempTooltip1 = document.getElementById('tempTooltip1');
+        const refreshBtn1 = document.getElementById('refreshThermal1');
+
+        let thermalMatrix = [];
+        const rows = 12;
+        const cols = 20;
+
+        function generateMatrix() {
+            thermalMatrix = [];
+            for (let r = 0; r < rows; r++) {
+                let row = [];
+                for (let c = 0; c < cols; c++) {
+                    // Generate heat blob in the center
+                    const distFromCenter = Math.hypot(r - rows/2, c - cols/2);
+                    const baseTemp = 25 + Math.random() * 10;
+                    const heatSpot = Math.max(0, (8 - distFromCenter) * 6);
+                    row.push(Math.min(85, Math.round(baseTemp + heatSpot)));
+                }
+                thermalMatrix.push(row);
+            }
+        }
+
+        function getTempColor(temp) {
+            // 20°C (Blue) -> 50°C (Yellow) -> 80°C (Red)
+            const norm = Math.min(1, Math.max(0, (temp - 20) / 60));
+            const hue = (1 - norm) * 240; // 240 is blue, 0 is red
+            return `hsl(${hue}, 85%, 50%)`;
+        }
+
+        function drawThermalCanvas1() {
+            if (!thermalCanvas1) return;
+            const ctx = thermalCanvas1.getContext('2d');
+            const w = thermalCanvas1.width = thermalCanvas1.clientWidth;
+            const h = thermalCanvas1.height = thermalCanvas1.clientHeight;
+
+            const cellW = w / cols;
+            const cellH = h / rows;
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const temp = thermalMatrix[r][c];
+                    ctx.fillStyle = getTempColor(temp);
+                    ctx.fillRect(c * cellW, r * cellH, cellW + 0.5, cellH + 0.5);
+                }
+            }
+        }
+
+        generateMatrix();
+        drawThermalCanvas1();
+
+        refreshBtn1.addEventListener('click', () => {
+            generateMatrix();
+            drawThermalCanvas1();
+        });
+
+        thermalCanvas1.addEventListener('mousemove', (e) => {
+            const rect = thermalCanvas1.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const c = Math.floor((x / rect.width) * cols);
+            const r = Math.floor((y / rect.height) * rows);
+
+            if (r >= 0 && r < rows && c >= 0 && c < cols) {
+                const temp = thermalMatrix[r][c];
+                tempTooltip1.style.left = `${x + 10}px`;
+                tempTooltip1.style.top = `${y - 25}px`;
+                tempTooltip1.innerText = `[R:${r}, C:${c}] ${temp}°C`;
+                tempTooltip1.classList.remove('hidden');
+            }
+        });
+
+        thermalCanvas1.addEventListener('mouseleave', () => {
+            tempTooltip1.classList.add('hidden');
+        });
+
+        const ctx2 = document.getElementById('thermalChart2').getContext('2d');
+        const anomalyBadge = document.getElementById('anomalyStatus');
+
+        const initialLabels = Array.from({length: 15}, (_, i) => `${i*2}s`);
+        const initialData = Array.from({length: 15}, () => Math.round(35 + Math.random() * 8));
+
+        const chart2 = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: initialLabels,
+                datasets: [{
+                    label: 'Thermal Sensor 01 (°C)',
+                    data: initialData,
+                    borderColor: '#38bdf8',
+                    backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { display: false },
+                    y: {
+                        min: 20,
+                        max: 80,
+                        ticks: { color: '#94a3b8', font: { size: 9 } },
+                        grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                    }
+                }
+            }
+        });
+
+        // Live stream chart interval
+        let timeCount = 30;
+        setInterval(() => {
+            timeCount += 2;
+            let nextVal = Math.round(35 + Math.random() * 10);
+            
+            // Random thermal anomaly spike
+            if (Math.random() < 0.15) {
+                nextVal = Math.round(68 + Math.random() * 10);
+            }
+
+            chart2.data.labels.shift();
+            chart2.data.labels.push(`${timeCount}s`);
+
+            chart2.data.datasets[0].data.shift();
+            chart2.data.datasets[0].data.push(nextVal);
+
+            if (nextVal > 65) {
+                chart2.data.datasets[0].borderColor = '#ef4444';
+                chart2.data.datasets[0].backgroundColor = 'rgba(239, 68, 68, 0.2)';
+                anomalyBadge.className = 'text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-rose-500/20 text-rose-500 animate-pulse';
+                anomalyBadge.innerText = `⚠️ SPIKE (${nextVal}°C)`;
+            } else {
+                chart2.data.datasets[0].borderColor = '#38bdf8';
+                chart2.data.datasets[0].backgroundColor = 'rgba(56, 189, 248, 0.1)';
+                anomalyBadge.className = 'text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400';
+                anomalyBadge.innerText = `NORMAL (${nextVal}°C)`;
+            }
+
+            chart2.update('none');
+        }, 1500);
+
+        async function fetchWeather() {
+            try {
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.23&longitude=129.08&current_weather=true&hourly=relativehumidity_2m');
+                const data = await res.json();
+                if (data && data.current_weather) {
+                    const t = data.current_weather.temperature;
+                    document.getElementById('weatherTemp').innerText = `${t}°C`;
+                    
+                    const code = data.current_weather.weathercode;
+                    const iconEl = document.getElementById('weatherIcon');
+                    if (code === 0) {
+                        iconEl.className = 'fa-solid fa-sun text-4xl text-amber-300 animate-spin-slow';
+                    } else if (code > 0 && code < 4) {
+                        iconEl.className = 'fa-solid fa-cloud-sun text-4xl text-sky-200';
+                    } else {
+                        iconEl.className = 'fa-solid fa-cloud-rain text-4xl text-blue-200';
+                    }
+                }
+            } catch (err) {
+                console.log("Weather API fallback active.");
+            }
+        }
+        fetchWeather();
+
+        const detailModal = document.getElementById('detailModal');
+        const modalContainer = document.getElementById('modalContainer');
+
+        function openModal(key) {
+            const data = modalData[key];
+            if (!data) return;
+
+            document.getElementById('modalBadge').innerText = data.badge;
+            document.getElementById('modalTitle').innerText = data.title;
+            document.getElementById('modalDescription').innerText = data.description;
+
+            const listEl = document.getElementById('modalTakeaways');
+            listEl.innerHTML = data.takeaways.map(t => `<li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-sky-500 mt-1 text-xs"></i><span>${t}</span></li>`).join('');
+
+            document.getElementById('modalCodeSnippet').innerText = data.code;
+
+            detailModal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContainer.classList.remove('scale-95', 'opacity-0');
+                modalContainer.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            modalContainer.classList.remove('scale-100', 'opacity-100');
+            modalContainer.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                detailModal.classList.add('hidden');
+            }, 200);
+        }
+
+        function copyPrompt(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            showToast("Prompt copied to clipboard!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function scrollToPrompts() {
+            document.getElementById('prompts').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        window.addEventListener('resize', () => {
+            drawThermalCanvas1();
+        });
+    </script>
+</body>
+</html>
